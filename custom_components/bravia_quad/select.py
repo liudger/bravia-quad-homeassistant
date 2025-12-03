@@ -1,4 +1,5 @@
 """Select platform for Bravia Quad controls."""
+
 from __future__ import annotations
 
 import logging
@@ -29,13 +30,13 @@ async def async_setup_entry(
 ) -> None:
     """Set up Bravia Quad select entities from a config entry."""
     client: BraviaQuadClient = hass.data[DOMAIN][entry.entry_id]
-    
+
     # Create all select entities
     entities = [
         BraviaQuadInputSelect(client, entry),
         BraviaQuadBassLevelSelect(client, entry),
     ]
-    
+
     async_add_entities(entities)
 
 
@@ -54,7 +55,9 @@ class BraviaQuadInputSelect(SelectEntity):
         self._attr_options = list(INPUT_OPTIONS.keys())
         # Initialize current option from client's current input
         current_input_value = client.input
-        self._attr_current_option = INPUT_VALUES_TO_OPTIONS.get(current_input_value, list(INPUT_OPTIONS.keys())[0])
+        self._attr_current_option = INPUT_VALUES_TO_OPTIONS.get(
+            current_input_value, list(INPUT_OPTIONS.keys())[0]
+        )
         self._attr_device_info = DeviceInfo(
             identifiers={(DOMAIN, entry.entry_id)},
             name=entry.data.get("name", "Bravia Quad"),
@@ -62,11 +65,10 @@ class BraviaQuadInputSelect(SelectEntity):
             model="Bravia Quad",
             configuration_url=f"http://{entry.data['host']}",
         )
-        
+
         # Register for input notifications
         self._client.register_notification_callback(
-            "main.input",
-            self._on_input_notification
+            "main.input", self._on_input_notification
         )
 
     async def _on_input_notification(self, value: str) -> None:
@@ -86,7 +88,7 @@ class BraviaQuadInputSelect(SelectEntity):
         if not input_value:
             _LOGGER.error("Invalid input option: %s", option)
             return
-        
+
         success = await self._client.async_set_input(input_value)
         if success:
             self._attr_current_option = option
@@ -123,7 +125,9 @@ class BraviaQuadBassLevelSelect(SelectEntity):
         self._attr_options = list(BASS_LEVEL_OPTIONS.keys())
         # Initialize current option from client's current bass level
         current_bass_value = client.bass_level
-        self._attr_current_option = BASS_LEVEL_VALUES_TO_OPTIONS.get(current_bass_value, list(BASS_LEVEL_OPTIONS.keys())[1])
+        self._attr_current_option = BASS_LEVEL_VALUES_TO_OPTIONS.get(
+            current_bass_value, list(BASS_LEVEL_OPTIONS.keys())[1]
+        )
         self._attr_entity_category = EntityCategory.CONFIG
         self._attr_device_info = DeviceInfo(
             identifiers={(DOMAIN, entry.entry_id)},
@@ -132,11 +136,10 @@ class BraviaQuadBassLevelSelect(SelectEntity):
             model="Bravia Quad",
             configuration_url=f"http://{entry.data['host']}",
         )
-        
+
         # Register for bass level notifications
         self._client.register_notification_callback(
-            "main.bassstep",
-            self._on_bass_level_notification
+            "main.bassstep", self._on_bass_level_notification
         )
 
     async def _on_bass_level_notification(self, value: str) -> None:
@@ -160,7 +163,7 @@ class BraviaQuadBassLevelSelect(SelectEntity):
         if bass_level is None:
             _LOGGER.error("Invalid bass level option: %s", option)
             return
-        
+
         success = await self._client.async_set_bass_level(bass_level)
         if success:
             self._attr_current_option = option

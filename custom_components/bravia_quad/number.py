@@ -1,4 +1,5 @@
 """Number platform for Bravia Quad controls."""
+
 from __future__ import annotations
 
 import logging
@@ -23,13 +24,13 @@ async def async_setup_entry(
 ) -> None:
     """Set up Bravia Quad number entities from a config entry."""
     client: BraviaQuadClient = hass.data[DOMAIN][entry.entry_id]
-    
+
     # Create all number entities
     entities = [
         BraviaQuadVolumeNumber(client, entry),
         BraviaQuadRearLevelNumber(client, entry),
     ]
-    
+
     async_add_entities(entities)
 
 
@@ -58,11 +59,10 @@ class BraviaQuadVolumeNumber(NumberEntity):
             model="Bravia Quad",
             configuration_url=f"http://{entry.data['host']}",
         )
-        
+
         # Register for volume notifications
         self._client.register_notification_callback(
-            "main.volumestep",
-            self._on_volume_notification
+            "main.volumestep", self._on_volume_notification
         )
 
     async def _on_volume_notification(self, value: Any) -> None:
@@ -120,11 +120,10 @@ class BraviaQuadRearLevelNumber(NumberEntity):
             model="Bravia Quad",
             configuration_url=f"http://{entry.data['host']}",
         )
-        
+
         # Register for rear level notifications
         self._client.register_notification_callback(
-            "main.rearvolumestep",
-            self._on_rear_level_notification
+            "main.rearvolumestep", self._on_rear_level_notification
         )
 
     async def _on_rear_level_notification(self, value: Any) -> None:

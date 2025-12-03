@@ -1,4 +1,5 @@
 """Switch platform for Bravia Quad controls."""
+
 from __future__ import annotations
 
 import logging
@@ -36,7 +37,7 @@ async def async_setup_entry(
 ) -> None:
     """Set up Bravia Quad switches from a config entry."""
     client: BraviaQuadClient = hass.data[DOMAIN][entry.entry_id]
-    
+
     # Create all switch entities
     entities = [
         BraviaQuadPowerSwitch(client, entry),
@@ -44,7 +45,7 @@ async def async_setup_entry(
         BraviaQuadSoundFieldSwitch(client, entry),
         BraviaQuadNightModeSwitch(client, entry),
     ]
-    
+
     async_add_entities(entities)
 
 
@@ -69,11 +70,10 @@ class BraviaQuadPowerSwitch(SwitchEntity):
             model="Bravia Quad",
             configuration_url=f"http://{entry.data['host']}",
         )
-        
+
         # Register for power notifications
         self._client.register_notification_callback(
-            "main.power",
-            self._on_power_notification
+            "main.power", self._on_power_notification
         )
 
     async def _on_power_notification(self, value: str) -> None:
@@ -130,11 +130,10 @@ class BraviaQuadVoiceEnhancerSwitch(SwitchEntity):
             model="Bravia Quad",
             configuration_url=f"http://{entry.data['host']}",
         )
-        
+
         # Register for voice enhancer notifications
         self._client.register_notification_callback(
-            FEATURE_VOICE_ENHANCER,
-            self._on_voice_enhancer_notification
+            FEATURE_VOICE_ENHANCER, self._on_voice_enhancer_notification
         )
 
     async def _on_voice_enhancer_notification(self, value: str) -> None:
@@ -191,11 +190,10 @@ class BraviaQuadSoundFieldSwitch(SwitchEntity):
             model="Bravia Quad",
             configuration_url=f"http://{entry.data['host']}",
         )
-        
+
         # Register for sound field notifications
         self._client.register_notification_callback(
-            FEATURE_SOUND_FIELD,
-            self._on_sound_field_notification
+            FEATURE_SOUND_FIELD, self._on_sound_field_notification
         )
 
     async def _on_sound_field_notification(self, value: str) -> None:
@@ -252,11 +250,10 @@ class BraviaQuadNightModeSwitch(SwitchEntity):
             model="Bravia Quad",
             configuration_url=f"http://{entry.data['host']}",
         )
-        
+
         # Register for night mode notifications
         self._client.register_notification_callback(
-            FEATURE_NIGHT_MODE,
-            self._on_night_mode_notification
+            FEATURE_NIGHT_MODE, self._on_night_mode_notification
         )
 
     async def _on_night_mode_notification(self, value: str) -> None:
