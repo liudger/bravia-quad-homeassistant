@@ -56,7 +56,7 @@ class BraviaQuadInputSelect(SelectEntity):
         # Initialize current option from client's current input
         current_input_value = client.input
         self._attr_current_option = INPUT_VALUES_TO_OPTIONS.get(
-            current_input_value, next(iter(INPUT_OPTIONS.keys()))
+            current_input_value, next(iter(INPUT_OPTIONS.keys()), "TV (eARC)")
         )
         self._attr_device_info = DeviceInfo(
             identifiers={(DOMAIN, entry.entry_id)},
