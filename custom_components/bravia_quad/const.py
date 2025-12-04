@@ -63,13 +63,3 @@ INPUT_OPTIONS = {
 
 # Reverse mapping (value -> display name)
 INPUT_VALUES_TO_OPTIONS = {v: k for k, v in INPUT_OPTIONS.items()}
-
-# Bass Level options mapping (display name -> value)
-BASS_LEVEL_OPTIONS = {
-    "MIN": 0,
-    "MID": 1,
-    "MAX": 2,
-}
-
-# Reverse mapping (value -> display name)
-BASS_LEVEL_VALUES_TO_OPTIONS = {v: k for k, v in BASS_LEVEL_OPTIONS.items()}
