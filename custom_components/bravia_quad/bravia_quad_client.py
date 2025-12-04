@@ -270,7 +270,7 @@ class BraviaQuadClient:
                     self._volume = volume
                     return self._volume
             except (ValueError, TypeError):
-                pass
+                pass  # Invalid response value, return cached state
         return self._volume
 
     async def async_set_input(self, input_value: str) -> bool:
@@ -422,7 +422,7 @@ class BraviaQuadClient:
         return self._night_mode
 
     async def async_set_rear_level(self, level: int) -> bool:
-        """Set rear level (0-10)."""
+        """Set rear level (-10 to 10)."""
         if level < MIN_REAR_LEVEL or level > MAX_REAR_LEVEL:
             msg = f"Rear level must be between {MIN_REAR_LEVEL} and {MAX_REAR_LEVEL}"
             raise ValueError(msg)
@@ -464,11 +464,11 @@ class BraviaQuadClient:
                     self._rear_level = rear_level
                     return self._rear_level
             except (ValueError, TypeError):
-                pass
+                pass  # Invalid response value, return cached state
         return self._rear_level
 
     async def async_set_bass_level(self, level: int) -> bool:
-        """Set bass level (0-2)."""
+        """Set bass level (-10 to 10)."""
         if level < MIN_BASS_LEVEL or level > MAX_BASS_LEVEL:
             msg = f"Bass level must be between {MIN_BASS_LEVEL} and {MAX_BASS_LEVEL}"
             raise ValueError(msg)
@@ -510,7 +510,7 @@ class BraviaQuadClient:
                     self._bass_level = bass_level
                     return self._bass_level
             except (ValueError, TypeError):
-                pass
+                pass  # Invalid response value, return cached state
         return self._bass_level
 
     def register_notification_callback(self, feature: str, callback: Callable) -> None:
