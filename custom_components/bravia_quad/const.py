@@ -26,9 +26,8 @@ MAX_VOLUME = 100
 MIN_VOLUME = 0
 MAX_REAR_LEVEL = 10
 MIN_REAR_LEVEL = -10
-# Bass level valid range is 0-2 (see bravia_quad_client.py line 470)
-MAX_BASS_LEVEL = 2
-MIN_BASS_LEVEL = 0
+MAX_BASS_LEVEL = 10
+MIN_BASS_LEVEL = -10
 
 # Bass level limits for non-subwoofer mode (select: MIN/MID/MAX)
 MAX_BASS_LEVEL_NO_SUB = 2
