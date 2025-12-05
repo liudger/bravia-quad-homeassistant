@@ -67,7 +67,14 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     # Detect subwoofer if not already detected (for existing entries without this data)
     if CONF_HAS_SUBWOOFER not in entry.data:
         _LOGGER.info("Detecting subwoofer for existing entry...")
-        has_subwoofer = await client.async_detect_subwoofer()
+        try:
+            has_subwoofer = await client.async_detect_subwoofer()
+        except (OSError, TimeoutError):
+            _LOGGER.warning(
+                "Subwoofer detection failed due to connection error, "
+                "defaulting to False"
+            )
+            has_subwoofer = False
         # Update entry data with detection result
         new_data = {**entry.data, CONF_HAS_SUBWOOFER: has_subwoofer}
         hass.config_entries.async_update_entry(entry, data=new_data)

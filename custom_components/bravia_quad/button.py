@@ -75,7 +75,14 @@ class BraviaQuadDetectSubwooferButton(ButtonEntity):
         async with self._detection_lock:
             _LOGGER.info("Starting subwoofer detection...")
 
-            has_subwoofer = await self._client.async_detect_subwoofer()
+            try:
+                has_subwoofer = await self._client.async_detect_subwoofer()
+            except (OSError, TimeoutError):
+                _LOGGER.exception("Subwoofer detection failed due to connection error")
+                raise HomeAssistantError(
+                    translation_domain=DOMAIN,
+                    translation_key="detection_failed",
+                ) from None
 
             # Get current value to check if it changed
             current_value = self._entry.data.get(CONF_HAS_SUBWOOFER)
