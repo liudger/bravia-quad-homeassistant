@@ -17,6 +17,11 @@
     "abort": {
       "already_configured": "Device is already configured"
     }
+  },
+  "exceptions": {
+    "reload_failed": {
+      "message": "Integration reload failed. Please reload manually via Settings > Devices & Services > Bravia Quad > Reload"
+    }
   }
 }
 

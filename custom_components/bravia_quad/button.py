@@ -8,6 +8,7 @@ from typing import TYPE_CHECKING
 
 from homeassistant.components.button import ButtonEntity
 from homeassistant.const import EntityCategory
+from homeassistant.exceptions import HomeAssistantError
 from homeassistant.helpers import entity_registry as er
 from homeassistant.helpers.device_registry import DeviceInfo
 
@@ -112,7 +113,13 @@ class BraviaQuadDetectSubwooferButton(ButtonEntity):
                 # A full reload is simpler and more robust than dynamic entity
                 # swapping, and the brief reconnection is acceptable for this
                 # rare operation.
-                await self._hass.config_entries.async_reload(self._entry.entry_id)
+                if not await self._hass.config_entries.async_reload(
+                    self._entry.entry_id
+                ):
+                    raise HomeAssistantError(
+                        translation_domain=DOMAIN,
+                        translation_key="reload_failed",
+                    )
             else:
                 _LOGGER.info(
                     "Subwoofer detection result unchanged: %s",
