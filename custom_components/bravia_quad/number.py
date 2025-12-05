@@ -184,7 +184,7 @@ class BraviaQuadBassLevelNumber(NumberEntity):
         self._entry = entry
         self._attr_has_entity_name = True
         self._attr_name = "Bass Level"
-        self._attr_unique_id = f"{DOMAIN}_{entry.entry_id}_bass_level"
+        self._attr_unique_id = f"{DOMAIN}_{entry.entry_id}_bass_level_slider"
         self._attr_native_min_value = MIN_BASS_LEVEL
         self._attr_native_max_value = MAX_BASS_LEVEL
         self._attr_native_step = 1

@@ -129,7 +129,7 @@ class BraviaQuadBassLevelSelect(SelectEntity):
         self._entry = entry
         self._attr_has_entity_name = True
         self._attr_name = "Bass Level"
-        self._attr_unique_id = f"{DOMAIN}_{entry.entry_id}_bass_level"
+        self._attr_unique_id = f"{DOMAIN}_{entry.entry_id}_bass_level_select"
         self._attr_options = list(BASS_LEVEL_OPTIONS.keys())
         self._attr_entity_category = EntityCategory.CONFIG
         # Initialize current option from client's current bass level

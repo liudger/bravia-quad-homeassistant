@@ -7,6 +7,7 @@ from typing import TYPE_CHECKING
 
 from homeassistant.components.button import ButtonEntity
 from homeassistant.const import EntityCategory
+from homeassistant.helpers import entity_registry as er
 from homeassistant.helpers.device_registry import DeviceInfo
 
 from .const import CONF_HAS_SUBWOOFER, DOMAIN
@@ -76,6 +77,25 @@ class BraviaQuadDetectSubwooferButton(ButtonEntity):
                 current_value,
                 has_subwoofer,
             )
+            # Remove the old bass level entity before reload
+            # If switching TO subwoofer, remove the select entity
+            # If switching FROM subwoofer, remove the slider entity
+            entity_registry = er.async_get(self._hass)
+            if has_subwoofer:
+                # Remove the select entity (no subwoofer -> subwoofer)
+                old_unique_id = f"{DOMAIN}_{self._entry.entry_id}_bass_level_select"
+            else:
+                # Remove the slider entity (subwoofer -> no subwoofer)
+                old_unique_id = f"{DOMAIN}_{self._entry.entry_id}_bass_level_slider"
+
+            if old_entity := entity_registry.async_get_entity_id(
+                "number" if not has_subwoofer else "select",
+                DOMAIN,
+                old_unique_id,
+            ):
+                _LOGGER.debug("Removing stale bass level entity: %s", old_entity)
+                entity_registry.async_remove(old_entity)
+
             # Update entry data with new detection result
             new_data = {**self._entry.data, CONF_HAS_SUBWOOFER: has_subwoofer}
             self._hass.config_entries.async_update_entry(self._entry, data=new_data)
