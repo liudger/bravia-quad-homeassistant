@@ -108,7 +108,10 @@ class BraviaQuadDetectSubwooferButton(ButtonEntity):
                 new_data = {**self._entry.data, CONF_HAS_SUBWOOFER: has_subwoofer}
                 self._hass.config_entries.async_update_entry(self._entry, data=new_data)
 
-                # Reload the integration to recreate entities with correct type
+                # Reload the integration to recreate entities with correct type.
+                # A full reload is simpler and more robust than dynamic entity
+                # swapping, and the brief reconnection is acceptable for this
+                # rare operation.
                 await self._hass.config_entries.async_reload(self._entry.entry_id)
             else:
                 _LOGGER.info(
