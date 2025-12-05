@@ -64,9 +64,9 @@ The integration creates the following entities under your Bravia Quad device:
 |--------|------|-------------|---------------|
 | `switch.bravia_quad_*_power` | Switch | Control power on/off | on/off |
 | `number.bravia_quad_*_volume` | Number | Control main volume | 0-100 |
-| `number.bravia_quad_*_rear_level` | Number | Control rear speaker level | 0-10 |
+| `number.bravia_quad_*_rear_level` | Number | Control rear speaker level | -10-10 |
+| `select.bravia_quad_*_bass_level` | Number | Control bass level | 0-2 (MIN, MID, MAX) |
 | `select.bravia_quad_*_source` | Select | Select input source | TV (eARC), HDMI In, Spotify |
-| `select.bravia_quad_*_bass_level` | Select | Select bass level | MIN, MID, MAX |
 | `switch.bravia_quad_*_voice_enhancer` | Switch | Toggle voice enhancer | on/off |
 | `switch.bravia_quad_*_sound_field` | Switch | Toggle sound field processing | on/off |
 | `switch.bravia_quad_*_night_mode` | Switch | Toggle night mode | on/off |
