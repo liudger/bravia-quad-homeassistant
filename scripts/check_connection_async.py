@@ -105,7 +105,12 @@ def main() -> None:
         sys.exit(1)
 
     host = sys.argv[1]
-    port = int(sys.argv[2]) if len(sys.argv) > 2 else DEFAULT_PORT  # noqa: PLR2004
+    try:
+        port = int(sys.argv[2]) if len(sys.argv) > 2 else DEFAULT_PORT  # noqa: PLR2004
+    except ValueError:
+        print(f"Error: Invalid port number '{sys.argv[2]}'")  # noqa: T201
+        print(f"Usage: {sys.argv[0]} <host> [port]")  # noqa: T201
+        sys.exit(1)
 
     result = asyncio.run(check_async_connection(host, port))
     print(f"\nResult: {'PASSED' if result else 'FAILED'}")  # noqa: T201
