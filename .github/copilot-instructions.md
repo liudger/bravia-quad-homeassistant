@@ -1,6 +1,6 @@
 # GitHub Copilot & Claude Code Instructions
 
-This repository contains the core of Home Assistant, a Python 3 based home automation application.
+This repository contains a custom Home Assistant integration for Bravia Quad home theater systems.
 
 ## Integration Quality Scale
 
