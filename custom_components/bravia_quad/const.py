@@ -79,6 +79,7 @@ INPUT_OPTIONS = {
     "HDMI In": "hdmi1",
     "Spotify": "spotify",
     "Bluetooth": "bluetooth",
+    "Airplay": "airplay2",
 }
 
 # Reverse mapping (value -> display name)
