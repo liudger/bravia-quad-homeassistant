@@ -34,6 +34,7 @@ async def async_setup_entry(
 
     entities = [
         BraviaQuadDetectSubwooferButton(hass, client, entry),
+        BraviaQuadBluetoothPairingButton(client, entry),
     ]
 
     async_add_entities(entities)
@@ -132,3 +133,91 @@ class BraviaQuadDetectSubwooferButton(ButtonEntity):
                     "Subwoofer detection result unchanged: %s",
                     has_subwoofer,
                 )
+
+
+class BraviaQuadBluetoothPairingButton(ButtonEntity):
+    """Button to trigger Bluetooth pairing mode."""
+
+    _attr_should_poll = False
+
+    def __init__(self, client: BraviaQuadClient, entry: ConfigEntry) -> None:
+        """Initialize the Bluetooth pairing button entity."""
+        self._client = client
+        self._entry = entry
+        self._attr_has_entity_name = True
+        self._attr_name = "Trigger BT Pairing"
+        self._attr_unique_id = f"{DOMAIN}_{entry.entry_id}_bluetooth_pairing"
+        self._attr_entity_category = EntityCategory.DIAGNOSTIC
+        self._attr_icon = "mdi:bluetooth"
+        self._attr_device_info = DeviceInfo(
+            identifiers={(DOMAIN, entry.entry_id)},
+            name=entry.data.get("name", "Bravia Quad"),
+            manufacturer="Sony",
+            model="Bravia Quad",
+            configuration_url=f"http://{entry.data['host']}",
+        )
+
+    async def async_press(self) -> None:
+        """Handle button press to trigger Bluetooth pairing mode."""
+        _LOGGER.info("Triggering Bluetooth pairing mode...")
+
+        try:
+            # Step 1: Verify the source is currently bluetooth,
+            # if not change to bluetooth
+            current_input = await self._client.async_get_input()
+            if current_input != "bluetooth":
+                _LOGGER.info(
+                    "Current input is %s, switching to bluetooth", current_input
+                )
+                success = await self._client.async_set_input("bluetooth")
+                if not success:
+                    _LOGGER.error("Failed to switch input to bluetooth")
+                    msg = "Failed to switch input to Bluetooth. Please try again."
+                    raise HomeAssistantError(msg)
+            else:
+                _LOGGER.debug("Input is already set to bluetooth")
+
+            # Step 2: Send command to set bluetooth.mode to "Off"
+            command_off = {
+                "id": 0,
+                "type": "set",
+                "feature": "bluetooth.mode",
+                "value": "Off",
+            }
+            _LOGGER.debug("Setting bluetooth.mode to Off")
+            response = await self._client.async_send_command(command_off)
+            if not response or response.get("value") != "ACK":
+                _LOGGER.warning(
+                    "Unexpected response when setting bluetooth.mode to Off: %s",
+                    response,
+                )
+
+            # Step 3: Wait 500ms
+            await asyncio.sleep(0.5)
+
+            # Step 4: Send command to set bluetooth.mode to "RX"
+            command_rx = {
+                "id": 0,
+                "type": "set",
+                "feature": "bluetooth.mode",
+                "value": "RX",
+            }
+            _LOGGER.debug("Setting bluetooth.mode to RX")
+            response = await self._client.async_send_command(command_rx)
+            if not response or response.get("value") != "ACK":
+                _LOGGER.warning(
+                    "Unexpected response when setting bluetooth.mode to RX: %s",
+                    response,
+                )
+
+            _LOGGER.info("Bluetooth pairing mode triggered successfully")
+
+        except (OSError, TimeoutError) as err:
+            _LOGGER.exception(
+                "Bluetooth pairing trigger failed due to connection error"
+            )
+            msg = (
+                "Failed to trigger Bluetooth pairing mode due to a "
+                "connection error. Please try again."
+            )
+            raise HomeAssistantError(msg) from err
