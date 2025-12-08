@@ -79,6 +79,7 @@ The integration creates the following entities under your Bravia Quad device:
 | `switch.bravia_quad_*_hdmi_cec` | Switch | Toggle HDMI CEC | on/off |
 | `switch.bravia_quad_*_auto_standby` | Switch | Toggle auto standby | on/off |
 | `button.bravia_quad_*_detect_subwoofer` | Button | Re-detect subwoofer (diagnostic) | - |
+| `button.bravia_quad_*_bluetooth_pairing` | Button | Trigger Bluetooth pairing mode (diagnostic) | - |
 
 *Note: `*` represents your device's unique entry ID*
 
