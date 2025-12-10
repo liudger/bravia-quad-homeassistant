@@ -18,6 +18,55 @@
       "already_configured": "Device is already configured"
     }
   },
+  "entity": {
+    "button": {
+      "detect_subwoofer": {
+        "name": "Detect subwoofer"
+      },
+      "bluetooth_pairing": {
+        "name": "Bluetooth pairing"
+      }
+    },
+    "number": {
+      "volume": {
+        "name": "Volume"
+      },
+      "rear_level": {
+        "name": "Rear level"
+      },
+      "bass_level": {
+        "name": "Bass level"
+      }
+    },
+    "select": {
+      "input": {
+        "name": "Source"
+      },
+      "bass_level": {
+        "name": "Bass level"
+      }
+    },
+    "switch": {
+      "power": {
+        "name": "Power"
+      },
+      "hdmi_cec": {
+        "name": "HDMI CEC"
+      },
+      "auto_standby": {
+        "name": "Auto standby"
+      },
+      "voice_enhancer": {
+        "name": "Voice enhancer"
+      },
+      "sound_field": {
+        "name": "Sound field"
+      },
+      "night_mode": {
+        "name": "Night mode"
+      }
+    }
+  },
   "exceptions": {
     "reload_failed": {
       "message": "Integration reload failed. Please reload manually via Settings > Devices & Services > Bravia Quad > Reload"
