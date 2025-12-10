@@ -107,4 +107,3 @@ jobs:
             Install via HACS or download from the [releases page](https://github.com/${{ github.repository }}/releases).
           draft: false
           prerelease: false
-
