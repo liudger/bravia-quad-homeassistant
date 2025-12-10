@@ -85,7 +85,7 @@ async def check_async_connection(host: str, port: int = DEFAULT_PORT) -> bool:
 
     except OSError as e:
         print(f"Error: {e}")  # noqa: T201
-        import traceback  # noqa: PLC0415
+        import traceback
 
         traceback.print_exc()
     finally:
