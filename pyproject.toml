@@ -45,7 +45,13 @@ ignore = [
 
 [tool.ruff.lint.per-file-ignores]
 "scripts/*" = ["T20"]  # Allow print statements in scripts
-"tests/*" = ["D"]      # Don't require docstrings in tests
+"tests/*" = [
+    "ARG001",  # Allow unused function arguments (fixtures need to be referenced)
+    "D",       # Don't require docstrings in tests
+    "PLR2004", # Allow magic values in tests (common for test assertions)
+    "S101",    # Allow assert statements in tests (pytest uses them)
+    "TCH002",  # Allow runtime imports in tests (needed for entity_registry, MockConfigEntry, etc.)
+]
 
 [tool.ruff.lint.isort]
 force-sort-within-sections = true
@@ -53,3 +59,8 @@ combine-as-imports = true
 
 [tool.ruff.lint.pydocstyle]
 convention = "pep257"
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+testpaths = ["tests"]
