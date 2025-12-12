@@ -6,8 +6,23 @@ cd "$(dirname "$0")/.."
 
 # Check if uv is installed
 if ! command -v uv &> /dev/null; then
+    if ! command -v curl &> /dev/null; then
+        echo "Error: 'uv' is not installed and 'curl' is not available to install it automatically."
+        echo "Please install 'uv' manually by following the instructions at https://github.com/astral-sh/uv#installation"
+        exit 1
+    fi
     echo "Installing uv..."
-    curl -LsSf https://astral.sh/uv/install.sh | sh
+    if ! curl -LsSf https://astral.sh/uv/install.sh | sh; then
+        echo "Error: Failed to install 'uv' automatically."
+        echo "Please install 'uv' manually by following the instructions at https://github.com/astral-sh/uv#installation"
+        exit 1
+    fi
+    # Check if uv is now installed
+    if ! command -v uv &> /dev/null; then
+        echo "Error: 'uv' was not found after installation attempt."
+        echo "Please install 'uv' manually by following the instructions at https://github.com/astral-sh/uv#installation"
+        exit 1
+    fi
 fi
 
 # Create venv and install dev dependencies from pyproject.toml
